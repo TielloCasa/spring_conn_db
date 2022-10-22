@@ -18,10 +18,14 @@ public class Connessione {
 	  static final String USER = "gianluca";
 	  static final String PASS = "gianluca";*/
 	  Connection conn = null;
-	
+	  Statement stmt = null;
+	  private String query;
 
 	  
-	public Connessione(String JDBC_DRIVER, String DB_URL, String USER, String PASS) {  
+	public Connessione(String JDBC_DRIVER, String DB_URL, String USER, String PASS, String query) { 
+		
+		setQuery(query);
+		
 	    try {
 	      Class.forName(JDBC_DRIVER);
 	      //System.out.println("va");
@@ -29,7 +33,22 @@ public class Connessione {
 	      if(conn != null) {
 	    	  System.out.println("Connessione effettuata");
 	      }
-    
+	      stmt = conn.createStatement();
+	     
+	      ResultSet rs = stmt.executeQuery(query);
+	      while (rs.next()) {
+	        int id = rs.getInt("n_telaio");
+	        int modello = rs.getInt("cod_modello");
+	        String targa = rs.getString("targa");
+	        String colore = rs.getString("colore");
+
+	        System.out.print("ID: " + id);
+	        System.out.print(", Cod_Modello: " + modello);
+	        System.out.print(", Targa: " + targa);
+	        System.out.println(", Colore: " + colore);
+	      }
+	      rs.close();
+	      stmt.close();
 	      
 	     conn.close();
 	    } catch (SQLException se) {
@@ -38,13 +57,20 @@ public class Connessione {
 	      e.printStackTrace();
 	    } finally {
 	      try {
-	       
+	    	  if (stmt != null)
+		          stmt.close();
 	        if (conn != null)
 	          conn.close();
 	      } catch (SQLException se) {
 	        se.printStackTrace();
 	      }
 	    }
+	}
+	
+	
+	
+	public void setQuery(String query) {
+		this.query=query;
 	}
 }
 	    

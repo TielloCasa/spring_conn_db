@@ -13,6 +13,6 @@ public class Config {
 
 	@Bean
 	public  Connessione getConnessione() {
-		return new Connessione("com.mysql.jdbc.Driver","jdbc:mysql://localhost/gestione_officina","gianluca","gianluca");
+		return new Connessione("com.mysql.jdbc.Driver","jdbc:mysql://localhost/gestione_officina","gianluca","gianluca","SELECT * FROM veicolo WHERE 1;");
 	}
 }
